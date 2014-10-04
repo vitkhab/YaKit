@@ -11,11 +11,11 @@
         poweroff
 
 2. Подключите к yakit-z01 LiveCD-образ Debian/Ubuntu, загрузите yakit-z01 в LiveCD-среду и выполните команды
-```
-sudo su
-source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step02.sh)
-reboot
-```
+    ```
+    sudo su
+    source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step02.sh)
+    reboot
+    ```
 3. На yakit-z01 выполните команды
 ```
 sudo su
