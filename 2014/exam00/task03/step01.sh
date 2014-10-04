@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Install essentials
+fullname=`uname -n`; order=`echo ${fullname: -1}`
+debconf-set-selections <<< "postfix postfix/mailnaim string yakit-z0$order.kit"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No configuration'"
 apt-get install -y mdadm ssh
 
@@ -13,7 +15,6 @@ mdadm --create --level=1 /dev/md126 --raid-devices=2 --metadata=1.2 /dev/sdb5 mi
 
 # Create root partition on LVM
 pvcreate /dev/md127
-fullname=`uname -n`; order=`echo ${fullname: -1}`
 vgcreate yakit-z0$order-vg-new /dev/md126
 lvsize=`lvdisplay | awk '/root/ {found=1}; /LV Size/ && found {print $3$4; exit}'`
 lvcreate -n root -L$lvsize yakit-z0$order-vg-new
