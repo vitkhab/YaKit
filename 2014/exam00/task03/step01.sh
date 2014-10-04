@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install essentials
-apt-get update
+debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No configuration'"
 apt-get install -y mdadm ssh
 
 # Copy partition table
@@ -34,7 +34,7 @@ sed -i "s#\yakit--z0$order--vg-root#yakit--z0$order--vg--new-root#" /etc/fstab
 # Fixing error "Diskfilter writes are not supported" during boot
 sed -i 's#quick_boot="1"#quick_boot="0"#' /etc/grub.d/10_linux
 
-# Change grub settings
+# Temporary change grub settings
 oldvguuid=`vgdisplay yakit-z0$order-vg | awk '/VG UUID/ {print $3}'`
 oldlvuuid=`lvdisplay /dev/yakit-z0$order-vg/root | awk '/LV UUID/ {print $3}'`
 newvguuid=`vgdisplay yakit-z0$order-vg-new | awk '/VG UUID/ {print $3}'`

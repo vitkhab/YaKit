@@ -1,19 +1,26 @@
 #!/bin/bash
 
+# Make clean grub configuration
 update-grub  
 grub-install /dev/sda
 grub-install /dev/sdb
 
 # Install prerequisite
+debconf-set-selections <<< "mysql-server mysql-server/root_password password root"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
 apt-get install -y libapache2-mod-php5 php5-mysql mysql-server ssh
 
-# Install wordpress
+# Download and unpack wordpress
 wget https://wordpress.org/latest.tar.gz
 tar xf latest.tar.gz -C /var/www/
+
+# Create wordpress DB
 echo 'CREATE DATABASE wordpress' | mysql -u root -proot
 echo 'GRANT ALL PRIVILEGES ON wordpress.* TO "wordpress"@"localhost" IDENTIFIED BY "wordpress"' | mysql -u root -proot
-echo "
-<?php
+
+# Create wordpress config
+fullname=`uname -n`; order=`echo ${fullname: -1}`
+echo "<?php
 define('DB_NAME', 'wordpress');
 define('DB_USER', 'wordpress');
 define('DB_PASSWORD', 'wordpress');
@@ -33,8 +40,8 @@ define('WP_DEBUG', false);
 if ( "\!"defined('ABSPATH') )
      define('ABSPATH', dirname(__FILE__) . '/');
 require_once(ABSPATH . 'wp-settings.php');
-define('WP_HOME', 'http://10.0.2.101');
-define('WP_SITEURL', 'http://10.0.2.101');
+define('WP_HOME', 'http://10.0.2."$((100 + order))"');
+define('WP_SITEURL', 'http://10.0.2."$((100 + order))"');
 if ( ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_HOST'])) ||
      ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_FOR'])) ) { 
  
@@ -45,8 +52,12 @@ if ( ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_HOST'])) ||
     define('WP_SITEURL', 'http://10.0.2.100:80');
 }
 " > /var/www/wordpress/wp-config.php
-sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/wordpress#' /etc/apache2/sites-available/000-default.conf
+
+# To be sure that apache2 has access to wordpress files
 chown www-data:www-data /var/www/wordpress
+
+# Make apache2 config changes
+sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/wordpress#' /etc/apache2/sites-available/000-default.conf
 ipaddr=`ifconfig eth0 | grep 'inet addr' | awk -F: '{print $2;}' | awk '{print $1;}'`
 sed -i "s#Listen 80#Listen $ipaddr:80#" /etc/apache2/ports.conf
 service apache2 restart
