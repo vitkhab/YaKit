@@ -3,11 +3,13 @@
 
 ### Краткая инструкция по настройке
 1. Запустите yakit-z01, зайдите под учетной записью toor и выполните команды
+
         sudo su
         apt-get update
         apt-get install -y curl
         source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step01.sh)
         poweroff
+
 2. Подключите к yakit-z01 LiveCD-образ Debian/Ubuntu, загрузите yakit-z01 в LiveCD-среду и выполните команды
 ```
 sudo su
