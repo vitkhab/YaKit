@@ -19,6 +19,16 @@ if ( ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_HOST'])) ||
         )
 );" >> /var/www/wordpress/wp-config.php
 
+# Sync both www root directories
+apt-get install -y unison incron autofs nfs-kernel-server
+echo "/var/www/wordpress 10.0.2.10"$((order % 2 + 101))"(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
+service nfs-kernel-server restart
+mkdir /net
+echo "/net -hosts" >> /etc/auto.master
+service autofs restart
+find /var/www/wordpress -type d -print0 | xargs -0 -I{} echo "{} IN_CREATE,IN_DELETE,IN_CLOSE_WRITE env HOME=/ unison -batch /var/www/wordpress/ /net/10.0.2."$((order % 2 + 101))"/var/www/wordpress/" > /etc/incron.d/wordpress.conf
+service incron restart
+
 # Change MySQL settings to Master-Master Replication
 fullname=`uname -n`; order=`echo ${fullname: -1}`
 sed -i "s#bind-address\([ \t]*\)= 127.0.0.1#bind-address\1= 10.0.2.$((100 + order))#" /etc/mysql/my.cnf
