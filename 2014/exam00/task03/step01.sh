@@ -2,7 +2,7 @@
 
 # Install essentials
 fullname=`uname -n`; order=`echo ${fullname: -1}`
-debconf-set-selections <<< "postfix postfix/mailnaim string yakit-z0$order.kit"
+debconf-set-selections <<< "postfix postfix/mailname string yakit-z0$order.kit"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No configuration'"
 apt-get install -y mdadm ssh
 

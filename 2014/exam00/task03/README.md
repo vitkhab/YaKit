@@ -26,18 +26,21 @@
     poweroff
     ```
 2. Подключите к yakit-z01 LiveCD-образ Debian/Ubuntu, загрузите yakit-z01 в LiveCD-среду и выполните команды
+
     ```
     sudo su
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step02.sh)
     reboot
     ```
 3. На yakit-z01 выполните команды
+
     ```
     sudo su
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step03.sh)
     ```
 4. Зайдите по http на адрес yakit-z01 и завершите установку Wordpress заполнив поля формы
 5. Измените количество RAM yakit-z03 на 768 МБ, загрузите yakit-z03 и выполните команды
+
     ```
     sudo su
     apt-get update
@@ -45,21 +48,25 @@
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step05.sh)
     ```
 6. На yakit-z01 выполните команды
+
     ```
     sudo su
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step06.sh)
     ```
 7. На yakit-z03 выполните команду
+
     ```
     yandex-tank
     ```
 8. На yakit-z01 выполните команды
+
     ```
     sudo su
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step08.sh)
     ```
 9. Повторите шаги 1-3, 6, 8 на yakit-z02
 10. На yakit-z03 выполните команды
+
     ```
     sudo su
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step10.sh)
@@ -91,10 +98,11 @@
 * После отключения жесткого диска ОС не выдает предложения зайти под пользователем в систему (при этом все службы запускаются и работают), после перезагрузки проблема не проявляется
 * При добавлении новой директории в /var/www/wordpress на серверах yakit-z01 или yakit-z02 для продолжения синхронизации директорий на обоих серверах придется выполнить команды (предположительно лечится переходом с incron на Watcher):
 
-        fullname=`uname -n`; order=`echo ${fullname: -1}`
-        find /var/www/wordpress -type d -print0 | xargs -0 -I{} echo "{} IN_CREATE,IN_DELETE,IN_CLOSE_WRITE env HOME=/ unison -batch /var/www/wordpress/ /net/10.0.2."$((order % 2 + 101))"/var/www/wordpress/" > /etc/incron.d/wordpress.conf
-        service incron restart
-
+    ```
+    fullname=`uname -n`; order=`echo ${fullname: -1}`
+    find /var/www/wordpress -type d -print0 | xargs -0 -I{} echo "{} IN_CREATE,IN_DELETE,IN_CLOSE_WRITE env HOME=/ unison -batch /var/www/wordpress/ /net/10.0.2."$((order % 2 + 101))"/var/www/wordpress/" > /etc/incron.d/wordpress.conf
+    service incron restart
+    ```
 * Решение носит сильно специфичный характер, работает исключительно в рамках заданных условий, переносу в другую среду не подлежит
 
 ### Тестирование отказоустойчивости
