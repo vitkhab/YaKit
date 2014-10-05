@@ -21,7 +21,7 @@ if ( ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_HOST'])) ||
 
 # Sync both www root directories
 apt-get install -y unison incron autofs nfs-kernel-server
-echo "/var/www/wordpress 10.0.2.10"$((order % 2 + 101))"(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
+echo "/var/www/wordpress 10.0.2."$((order % 2 + 101))"(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
 service nfs-kernel-server restart
 mkdir /net
 echo "/net -hosts" >> /etc/auto.master

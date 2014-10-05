@@ -45,7 +45,7 @@ define('WP_SITEURL', 'http://10.0.2."$((100 + order))"');
 " > /var/www/wordpress/wp-config.php
 
 # To be sure that apache2 has access to wordpress files
-chown www-data:www-data /var/www/wordpress
+chown -R www-data:www-data /var/www/wordpress
 
 # Make apache2 config changes
 sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/wordpress#' /etc/apache2/sites-available/000-default.conf
