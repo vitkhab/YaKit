@@ -26,7 +26,12 @@ service nfs-kernel-server restart
 mkdir /net
 echo "/net -hosts" >> /etc/auto.master
 service autofs restart
-find /var/www/wordpress -type d -print0 | xargs -0 -I{} echo "{} IN_CREATE,IN_DELETE,IN_CLOSE_WRITE env HOME=/ unison -batch /var/www/wordpress/ /net/10.0.2."$((order % 2 + 101))"/var/www/wordpress/" > /etc/incron.d/wordpress.conf
+echo "#"\!"/bin/bash
+
+env HOME=/ unison -batch /var/www/wordpress/ /net/10.0.2."$((order % 2 + 101))"/var/www/wordpress/" >> /etc/init.d/sync_wordpress_dir.sh
+chmod +x /etc/init.d/sync_wordpress_dir.sh
+update-rc.d sync_wordpress_dir.sh defaults
+find /var/www/wordpress -type d -print0 | xargs -0 -I{} echo "{} IN_CREATE,IN_DELETE,IN_CLOSE_WRITE /etc/init.d/sync_wordpress_dir.sh" > /etc/incron.d/wordpress.conf
 service incron restart
 
 # Change MySQL settings to Master-Master Replication
