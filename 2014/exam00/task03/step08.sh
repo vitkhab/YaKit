@@ -2,7 +2,17 @@
 
 # Add distribution for memcached
 fullname=`uname -n`; order=`echo ${fullname: -1}`
-echo "\$memcached_servers = array(
+sed -i 's#10.0.2.101#10.0.2.100#g' /var/www/wordpress/wp-config.php
+sed -i 's#10.0.2.102#10.0.2.100#g' /var/www/wordpress/wp-config.php
+echo "
+if ( ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_HOST'])) ||
+     ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_FOR'])) ) { 
+ 
+    // http://wordpress.org/support/topic/wordpress-behind-reverse-proxy-1
+    \$_SERVER['HTTP_HOST'] = \$_SERVER['HTTP_X_FORWARDED_HOST'];
+}
+
+\$memcached_servers = array(
         'default' => array(
                 '10.0.2.101:11211',
                 '10.0.2.102:11211'
@@ -69,5 +79,8 @@ http {
         }
     }
 }' > /etc/nginx/nginx.conf
+
+# Restart services and flush memcached
+echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
 service nginx stop
 service heartbeat start

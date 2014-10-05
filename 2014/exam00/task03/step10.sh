@@ -9,6 +9,7 @@ echo "STOP SLAVE" | mysql -h 10.0.2.102 -u dbadmin -pdbadmin
 
 # Sync databases
 mysqldump -u dbadmin -pdbadmin -h 10.0.2.101 wordpress > /tmp/wordpress.sql
+sed -i 's#10.0.2.101#10.0.2.100#g' /tmp/wordpress.sql
 mysql -u dbadmin -pdbadmin -h 10.0.2.102 wordpress < /tmp/wordpress.sql
 
 # Sync replication

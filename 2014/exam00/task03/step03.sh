@@ -42,15 +42,6 @@ if ( "\!"defined('ABSPATH') )
 require_once(ABSPATH . 'wp-settings.php');
 define('WP_HOME', 'http://10.0.2."$((100 + order))"');
 define('WP_SITEURL', 'http://10.0.2."$((100 + order))"');
-if ( ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_HOST'])) ||
-     ("\!"empty( \$_SERVER['HTTP_X_FORWARDED_FOR'])) ) { 
- 
-    // http://wordpress.org/support/topic/wordpress-behind-reverse-proxy-1
-    \$_SERVER['HTTP_HOST'] = \$_SERVER['HTTP_X_FORWARDED_HOST'];
- 
-    define('WP_HOME', 'http://10.0.2.100:80');
-    define('WP_SITEURL', 'http://10.0.2.100:80');
-}
 " > /var/www/wordpress/wp-config.php
 
 # To be sure that apache2 has access to wordpress files

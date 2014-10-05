@@ -12,7 +12,7 @@ mv memcached/object-cache.php /var/www/wordpress/wp-content/
 sed -i 's#query_cache_size = [0-9]+M#query_cache_size = 32M#' /etc/mysql/my.cnf
 sed -i 's#query_cache_limit = [0-9]+M#query_cache_limit = 1M#' /etc/mysql/my.cnf
 echo "[mysqld]
-innodb_buffer_pool_size = 256M
+innodb_buffer_pool_size = 192M
 innodb_flush_log_at_trx_commit = 2" > /etc/mysql/conf.d/innodb.cnf
 
 # Restart services with changed configuration
