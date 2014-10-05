@@ -49,6 +49,7 @@ chown www-data:www-data /var/www/wordpress
 
 # Make apache2 config changes
 sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/wordpress#' /etc/apache2/sites-available/000-default.conf
+sed -rei 's#MaxRequestWorkers[ \t]+[0-9]+#MaxRequestWorkers 100#' /etc/apache2/mods-available/mpm_prefork.conf
 ipaddr=`ifconfig eth0 | grep 'inet addr' | awk -F: '{print $2;}' | awk '{print $1;}'`
 sed -i "s#Listen 80#Listen $ipaddr:80#" /etc/apache2/ports.conf
 service apache2 restart

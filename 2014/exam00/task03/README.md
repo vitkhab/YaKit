@@ -17,6 +17,7 @@
 
 ### Решение
 1. Запустите yakit-z01, зайдите под учетной записью toor и выполните команды
+
     ```
     sudo su
     apt-get update
@@ -89,11 +90,11 @@
 * Во время выключения одного из серверов возможно появление ошибки подключения к серверу СУБД (должно правиться порядком загрузки/выключения сервисов)
 * После отключения жесткого диска ОС не выдает предложения зайти под пользователем в систему (при этом все службы запускаются и работают), после перезагрузки проблема не проявляется
 * При добавлении новой директории в /var/www/wordpress на серверах yakit-z01 или yakit-z02 для продолжения синхронизации директорий на обоих серверах придется выполнить команды (предположительно лечится переходом с incron на Watcher):
-    ```
-    fullname=`uname -n`; order=`echo ${fullname: -1}`
-    find /var/www/wordpress -type d -print0 | xargs -0 -I{} echo "{} IN_CREATE,IN_DELETE,IN_CLOSE_WRITE env HOME=/ unison -batch /var/www/wordpress/ /net/10.0.2."$((order % 2 + 101))"/var/www/wordpress/" > /etc/incron.d/wordpress.conf
-    service incron restart
-    ```
+
+        fullname=`uname -n`; order=`echo ${fullname: -1}`
+        find /var/www/wordpress -type d -print0 | xargs -0 -I{} echo "{} IN_CREATE,IN_DELETE,IN_CLOSE_WRITE env HOME=/ unison -batch /var/www/wordpress/ /net/10.0.2."$((order % 2 + 101))"/var/www/wordpress/" > /etc/incron.d/wordpress.conf
+        service incron restart
+
 * Решение носит сильно специфичный характер, работает исключительно в рамках заданных условий, переносу в другую среду не подлежит
 
 ### Тестирование отказоустойчивости
