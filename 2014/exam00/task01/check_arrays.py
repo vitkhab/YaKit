@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 New versions of this script will be available at
-https://github.com/KrylCW/YaKit/tree/master/2014/exam00/task01/check_arrays.py
+https://github.com/KrylCW/YaKit/tree/master/2014/exam00/task01
 
 Due deadline I couldn't program everything I wanted
 I ask you to look for newer version of this script at the link above
@@ -116,7 +116,10 @@ def copy_partition_table():
     cleandisk = find_clean_disk()
     sparedisk = find_spare_disk()
     get_partition_table = subprocess.Popen(['sfdisk', '-d', '/dev/'+cleandisk], stdout=subprocess.PIPE)
-    subprocess.check_output(['sfdisk', '/dev/'+sparedisk], stdin=get_partition_table.stdout)
+    try:
+        subprocess.check_output(['sfdisk', '/dev/'+sparedisk], stdin=get_partition_table.stdout)
+    except subprocess.CalledProcessError:
+        print "No partition table was found"
 
 
 def rebuild_raids():
