@@ -39,7 +39,7 @@
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step03.sh)
     ```
 4. Зайдите по http на адрес yakit-z01 и завершите установку Wordpress заполнив поля формы
-5. Измените количество RAM yakit-z03 на 768 МБ, загрузите yakit-z03 и выполните команды
+5. Измените количество RAM yakit-z03 на 768 МБ, загрузите yakit-z03 и выполните команды (yakit-z01 должен быть включен)
 
     ```
     sudo su
@@ -53,7 +53,7 @@
     sudo su
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step06.sh)
     ```
-7. На yakit-z03 выполните команду
+7. На yakit-z03 выполните команду (yakit-z01 должен быть включен)
 
     ```
     yandex-tank
@@ -65,7 +65,7 @@
     source <(curl -s https://raw.githubusercontent.com/KrylCW/YaKit/master/2014/exam00/task03/step08.sh)
     ```
 9. Повторите шаги 1-3, 6, 8 на yakit-z02
-10. На yakit-z03 выполните команды
+10. На yakit-z03 выполните команды (yakit-z01 и yakit-z02 должны быть включены)
 
     ```
     sudo su
